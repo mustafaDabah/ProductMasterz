@@ -5,10 +5,12 @@ const ArticlePageSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    trim: true,
   },
   lang: {
     type: String,
     required: true,
+    trim: true,
   },
   navbar: [
     {
@@ -31,8 +33,8 @@ ArticlePageSchema.index({ name: 1, lang: 1 }, { unique: true });
 
 function validateCreatePage(object) {
   const schema = Joi.object({
-    name: Joi.string().required(),
-    lang: Joi.string().required(),
+    name: Joi.string().trim().required(),
+    lang: Joi.string().trim().required(),
     navbar: Joi.array().items(
       Joi.object({
         text: Joi.string().required(),
@@ -51,8 +53,8 @@ function validateCreatePage(object) {
 
 function validateUpdatePage(object) {
   const schema = Joi.object({
-    name: Joi.string(),
-    lang: Joi.string(),
+    name: Joi.string().trim(),
+    lang: Joi.string().trim(),
     navbar: Joi.array().items(
       Joi.object({
         text: Joi.string().required(),
@@ -71,8 +73,8 @@ function validateUpdatePage(object) {
 
 function validateGetPage(object) {
   const schema = Joi.object({
-    name: Joi.string().required(),
-    lang: Joi.string().required(),
+    name: Joi.string().trim().required(),
+    lang: Joi.string().trim().required(),
   });
   return schema.validate(object);
 }

@@ -119,16 +119,6 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
     });
     if (error) return res.status(400).json({ message: error.message });
 
-    // // check if there is another page with the same newPageName and newPageLanguage
-    // const anotherPageWithNameAndLang = await ArticlePage.findOne({
-    //   name: newPageName,
-    //   lang: newPageLang,
-    // });
-    // if (anotherPageWithNameAndLang)
-    //   return res.status(400).json({
-    //     message: `error - there is another page with ${newPageName} as a page name and ${newPageLang}`,
-    //   });
-
     let page = await ArticlePage.findOne({ name: pageName, lang });
     if (!page)
       return res.status(404).json({
@@ -154,7 +144,11 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
       message: `'${pageName}' page with '${lang}' language is updated successfully`,
     });
   } catch (error) {
-    console.log(error);
+    if (error.codeName === "DuplicateKey") {
+      return res.status(400).json({
+        message: `error - there is another page with the same name and language, try to change any one of them`,
+      });
+    }
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
   }
 });
@@ -162,14 +156,20 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
 /**
  * @desc delete single page
  * @route /api/v0/pages/:pageName/:lang
- * @method
- * @access
+ * @method DELETE
+ * @access private (only admins)
  */
 module.exports.deleteArticlePageCtrl = asyncHandler(async (req, res) => {
   try {
     const { pageName, lang } = req.params;
     const { error } = validateGetPage(req.params);
     if (error) return res.status(400).json({ message: error.message });
+
+    const pageExist = await ArticlePage.findOne({ name: pageName, lang });
+    if (!pageExist)
+      return res
+        .status(404)
+        .json({ message: `the page you trying to delete doesn't exist` });
 
     const deletedPage = await ArticlePage.findOneAndDelete({
       name: pageName,
