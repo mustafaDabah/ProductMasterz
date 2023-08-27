@@ -38,7 +38,7 @@ module.exports.createArticlePageCtrl = asyncHandler(async (req, res) => {
     });
     if (pageExist)
       return res.status(400).json({
-        message: `'${req.body.name}' page whith '${req.body.lang}' language already exists`,
+        message: `'${req.body.name}' page with '${req.body.lang}' language already exists`,
       });
 
     const newPage = await ArticlePage.create(req.body);
@@ -102,7 +102,10 @@ module.exports.getAllArticlePagesCtrl = asyncHandler(async (req, res) => {
 module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
   try {
     const { pageName, lang } = req.params;
-    const { error: PageParamsError } = validateGetPage(req.params);
+    const { error: PageParamsError } = validateGetPage({
+      name: pageName,
+      lang,
+    });
     if (PageParamsError)
       return res.status(400).json({ message: PageParamsError.message });
 
