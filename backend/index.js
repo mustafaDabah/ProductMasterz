@@ -29,6 +29,8 @@ app.use("/api/v0/sections", require("./routes/sectionRoutes"));
 app.use("/api/v0/pages", require("./routes/pageRoutes"));
 
 // Permanent Routes
+
+app.use("/api/v0/pages/", require("./routes/homeRoutes"));
 app.use("/api/v0/home", require("./routes/homeRoutes"));
 app.use("/api/v0/webinar", require("./routes/webinarRoutes"));
 app.use("/api/v0/registered-lead", require("./routes/registeredLeadRoutes"));
