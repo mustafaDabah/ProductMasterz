@@ -61,7 +61,7 @@ module.exports.createArticlePageCtrl = asyncHandler(async (req, res) => {
 module.exports.getSingleArticlePageCtrl = asyncHandler(async (req, res) => {
   try {
     const { pageName, lang } = req.params;
-    const { error } = validateGetPage(req.params);
+    const { error } = validateGetPage({ name: pageName, lang });
     if (error) return res.status(400).json({ message: error.message });
 
     const page = await ArticlePage.findOne({ name: pageName, lang });
