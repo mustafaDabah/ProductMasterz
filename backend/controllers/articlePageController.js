@@ -70,7 +70,7 @@ module.exports.getSingleArticlePageCtrl = asyncHandler(async (req, res) => {
         message: `${pageName} page with '${lang}' language is not found`,
       });
 
-    return res.status(200).json(page);
+    return res.status(200).json({ page });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
