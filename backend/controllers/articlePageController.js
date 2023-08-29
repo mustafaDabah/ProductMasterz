@@ -85,8 +85,23 @@ module.exports.getSingleArticlePageCtrl = asyncHandler(async (req, res) => {
  */
 module.exports.getAllArticlePagesCtrl = asyncHandler(async (req, res) => {
   try {
-    const pageNames = await ArticlePage.find().select("name");
-    return res.status(200).json(pageNames);
+    const pages = await ArticlePage.aggregate([
+      {
+        $group: {
+          _id: "$name",
+          langs: { $push: "$lang" },
+        },
+      },
+      {
+        $project: {
+          name: "$_id",
+          langs: 1,
+          _id: 0,
+        },
+      },
+    ]);
+
+    return res.status(200).json(pages);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
