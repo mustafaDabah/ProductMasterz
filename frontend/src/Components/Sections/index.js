@@ -1,16 +1,5 @@
 export { default as Header  } from './Header/Header';
 export { default as HeaderTwo  } from './Header/HeaderTwo';
 export { default as About } from './About/About';
-export { default as AboutOmar } from './AboutOmar/AboutOmar';
 export { default as Register } from './Register/Register';
-export { default as Portfolio } from './Portfolio/Portfolio';
-export { default as Gallery } from './Gallery/Gallery';
-export { default as Newsletter } from './Newsletter/Newsletter';
 export { default as ContactUs } from './ContactUs/ContactUs';
-export { default as Footer } from './Footer/Footer';
-export { default as Skills } from './Skills/Skills';
-export { default as Testimonial } from './Testimonial/Testimonial';
-export { default as Roadmap } from './Roadmap/Roadmap';
-export { default as Service } from './Service/Service';
-export { default as Products } from './Products/Products';
-export { default as Certification } from './Certification/Certification';
