@@ -24,7 +24,7 @@ export default async function Home() {
 
 
   return (
-    <div className="home-page">
+    <div className="home-page direction-rtl">
       <Header
         navLinks={navbarItems}
         content={headerContent}
