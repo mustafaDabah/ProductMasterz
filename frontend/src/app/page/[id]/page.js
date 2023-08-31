@@ -25,17 +25,25 @@ async function blog({searchParams, params }) {
   const navbarItems = websiteContent.navbar;
   const headerContent = websiteContent.header;
 
+  console.log(websiteContent)
+
   return (
     <div className={`home-page ${lang === 'ar' ? 'direction-rtl' : 'direction-ltr' }`}>
-      <Header
-        navLinks={navbarItems}
-        content={headerContent}
-        imgPath="/logo.png"
+      {
+        websiteContent.message ? <p className='text-dark'>please choose correct url link</p> : (
+          <>
+            <Header
+              navLinks={navbarItems}
+              content={headerContent}
+              imgPath="/logo.png"
 
-      />
-      <div className='container'> 
-       <ContactUsParse content={websiteContent.content} />
-      </div>
+            />
+            <div className='container'> 
+            <ContactUsParse content={websiteContent.content} />
+            </div>
+          </>
+        )
+      }
     </div>
   )
 }

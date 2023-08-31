@@ -32,7 +32,9 @@ async function page({searchParams, params }) {
 
   return (
     <div>
-      <EditPages pageData={page} />
+      {
+        page.message ? <p className='text-dark'>please choose correct url link</p> : ( <EditPages pageData={page} />)
+      }
     </div>
   )
 }
