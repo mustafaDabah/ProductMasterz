@@ -26,8 +26,6 @@ function CreateBlog() {
   const [htmlText, setHtmlText] = useState('')
   const [formData, setFormData] = useState({});
 
-  console.log(formData)
-
   const getSunEditorInstance = (sunEditor) => {
     editor.current = sunEditor;
   };
