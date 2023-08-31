@@ -1225,21 +1225,21 @@ hr {
     box-shadow: var(--basic-shadow);
 }
 
-#contactForm {
+.contactForm {
     padding: 5%;
     margin-top: 25px;
 }
 
-#contactForm label {
+.contactForm label {
     text-transform: capitalize;
     color: #767676;
 }
 
-#contactForm select option {
+.contactForm select option {
     color: #2B2B2B !important;
 }
 
-#contactForm input, #contactForm select {
+.contactForm input, .contactForm select {
     width: 100%;
     color: var(--white-color);
     background: none;
@@ -1250,7 +1250,7 @@ hr {
     margin-bottom: 25px;
 }
 
-#contactForm textarea {
+.contactForm textarea {
     width: 100%;
     color: #111010;
     background: none;
@@ -1261,7 +1261,7 @@ hr {
     margin-bottom: 25px;
 }
 
-#contactForm .button {
+.contactForm .button {
     margin-left: 0;
     padding: 15px 25px;
     font-size: 1.25rem;
@@ -1463,7 +1463,7 @@ hr {
         display: block;
     }
 
-    #contactForm {
+    .contactForm {
         margin: 0 0 3em 0;
     }
 

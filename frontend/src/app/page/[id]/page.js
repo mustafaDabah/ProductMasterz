@@ -1,7 +1,7 @@
 import React from 'react'
 import { getSingleRecord } from '@/utils/basicURL';
-import { ContactUs, Header } from '@/Components/Sections';
-import parse from 'html-react-parser';
+import {  Header } from '@/Components/Sections';
+import { ContactUsParse } from '@/Components/UI';
 
 
 export async function generateMetadata({ params, searchParams }) {
@@ -34,9 +34,7 @@ async function blog({searchParams, params }) {
 
       />
       <div className='container'> 
-        <div className='text-mode overflow-hidden sun-editor-editable sun-editor-editable-blockquote-blog bg-body sun-editor-editable-blog'>
-          {parse(`${websiteContent.content}`)}
-        </div>
+       <ContactUsParse content={websiteContent.content} />
       </div>
     </div>
   )

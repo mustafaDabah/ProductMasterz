@@ -15,7 +15,7 @@ async function getEmails() {
 export async function POST(req) {
   const { name, email, message, subject } = await req.json();
   const emails = await getEmails()
-  console.log(emails)
+  console.log(email)
 
   const transporter = nodemailer.createTransport({
     service: "Gmail",

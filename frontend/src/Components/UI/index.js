@@ -13,3 +13,4 @@ export { default as AuthProvider } from './AuthProvider/AuthProvider';
 export { default as Title } from './Title/Title';
 export { default as PagesList } from './PagesList/PagesList';
 export { default as Preview } from './Preview/Preview';
+export { default as ContactUsParse } from './ContactUsParse/ContactUsParse';
