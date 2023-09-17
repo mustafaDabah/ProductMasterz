@@ -38,6 +38,10 @@ module.exports.createTabCtrl = asyncHandler(async (req, res) => {
       .status(201)
       .json({ data: newTab, message: "tab is created successfully" });
   } catch (error) {
+    if (error.code === 11000)
+      return res
+        .status(500)
+        .json({ message: `duplicate ${Object.keys(error.keyPattern)[0]}` });
     console.log(error);
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
   }
