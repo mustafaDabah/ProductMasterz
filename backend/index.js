@@ -41,6 +41,7 @@ app.use("/api/v0/pages/", require("./routes/articlePageRoutes"));
 app.use("/api/v0/home", require("./routes/homeRoutes"));
 app.use("/api/v0/webinar", require("./routes/webinarRoutes"));
 app.use("/api/v0/registered-lead", require("./routes/registeredLeadRoutes"));
+app.use("/api/v0/tabs", require("./routes/tabRoutes"));
 
 // Error Handler Middleware
 app.use(notFound);
