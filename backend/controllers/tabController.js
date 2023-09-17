@@ -36,7 +36,7 @@ module.exports.createTabCtrl = asyncHandler(async (req, res) => {
     const newTab = await Tab.create(req.body);
     res
       .status(201)
-      .json({ data: newTab, message: "tab is created successfully" });
+      .json({ data: newTab, message: "The tab has been created successfully" });
   } catch (error) {
     if (error.code === 11000)
       return res
@@ -63,6 +63,7 @@ module.exports.getAllTabsCtrl = asyncHandler(async (req, res) => {
           "localizedName.lang": lang,
         },
         {
+          tabUrlName: 1,
           "localizedName.$": 1,
         }
       );
@@ -70,6 +71,29 @@ module.exports.getAllTabsCtrl = asyncHandler(async (req, res) => {
       tabs = await Tab.find();
     }
     res.status(200).json(tabs);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
+  }
+});
+
+/**
+ * @desc delete single tab
+ * @route /api/v0/tabs/:tabName
+ * @method DELETE
+ * @access private(only admins)
+ */
+module.exports.deleteTabCtrl = asyncHandler(async (req, res) => {
+  try {
+    const { tabName } = req.params;
+    const isTabExist = await Tab.findOne({ tabUrlName: tabName });
+    if (!isTabExist)
+      return res.status(400).json({ message: "tab doesn't exist" });
+    const deletedTab = await Tab.findOneAndDelete({ tabUrlName: tabName });
+    res.status(200).json({
+      data: deletedTab,
+      message: "The tab has been deleted successfully",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
