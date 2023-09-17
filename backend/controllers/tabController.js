@@ -55,7 +55,20 @@ module.exports.createTabCtrl = asyncHandler(async (req, res) => {
  */
 module.exports.getAllTabsCtrl = asyncHandler(async (req, res) => {
   try {
-    const tabs = await Tab.find();
+    const { lang } = req.query;
+    let tabs;
+    if (lang) {
+      tabs = await Tab.find(
+        {
+          "localizedName.lang": lang,
+        },
+        {
+          "localizedName.$": 1,
+        }
+      );
+    } else {
+      tabs = await Tab.find();
+    }
     res.status(200).json(tabs);
   } catch (error) {
     console.log(error);
