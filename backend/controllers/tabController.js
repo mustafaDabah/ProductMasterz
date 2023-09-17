@@ -78,6 +78,49 @@ module.exports.getAllTabsCtrl = asyncHandler(async (req, res) => {
 });
 
 /**
+ * @desc update tab
+ * @route /api/v0/tabs/:tabName
+ * @method PUT
+ * @access private (only admins)
+ */
+module.exports.updateTabCtrl = asyncHandler(async (req, res) => {
+  try {
+    const { tabName } = req.params;
+    const { newTabUrlName, newLocalizedName, newOrder } = req.body;
+    const tab = await Tab.findOne({ tabUrlName: tabName });
+    if (!tab)
+      return res
+        .status(404)
+        .json({ message: "the tab you trying to update doesn't exist" });
+
+    // check that language in localizedName array should be unique
+    const langs = newLocalizedName.map((item) => item.lang);
+    if (new Set(langs).size !== langs.length) {
+      return res.status(400).json({ message: "duplicate languages" });
+    }
+    const updatedTab = await Tab.findOneAndUpdate(
+      { tabUrlName: tabName },
+      {
+        tabUrlName: newTabUrlName,
+        localizedName: newLocalizedName,
+        order: newOrder,
+      },
+      { new: true }
+    );
+    res
+      .status(200)
+      .json({ data: updatedTab, message: "tab has been updated successfully" });
+  } catch (error) {
+    if (error.code === 11000)
+      return res
+        .status(500)
+        .json({ message: `duplicate ${Object.keys(error.keyPattern)[0]}` });
+    console.log(error);
+    res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
+  }
+});
+
+/**
  * @desc delete single tab
  * @route /api/v0/tabs/:tabName
  * @method DELETE

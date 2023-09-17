@@ -2,6 +2,7 @@ const {
   createTabCtrl,
   getAllTabsCtrl,
   deleteTabCtrl,
+  updateTabCtrl,
 } = require("../controllers/tabController");
 
 const router = require("express").Router();
@@ -10,6 +11,6 @@ const router = require("express").Router();
 router.route("/").post(createTabCtrl).get(getAllTabsCtrl);
 
 // /api/v0/tabs/:tabName
-router.route("/:tabName").delete(deleteTabCtrl);
+router.route("/:tabName").put(updateTabCtrl).delete(deleteTabCtrl);
 
 module.exports = router;
