@@ -46,3 +46,19 @@ module.exports.createTabCtrl = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
   }
 });
+
+/**
+ * @desc get all tabs
+ * @route /api/v0/tabs
+ * @method GET
+ * @access private
+ */
+module.exports.getAllTabsCtrl = asyncHandler(async (req, res) => {
+  try {
+    const tabs = await Tab.find();
+    res.status(200).json(tabs);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
+  }
+});
