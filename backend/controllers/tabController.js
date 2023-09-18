@@ -81,9 +81,15 @@ module.exports.getAllTabsCtrl = asyncHandler(async (req, res) => {
         .populate({
           path: "pages",
           match: { lang: { $eq: lang } },
+          select: "pageUrlName name order lang",
+          options: { sort: { order: 1 } },
         });
     } else {
-      tabs = await Tab.find().sort({ order: 1 }).populate("pages");
+      tabs = await Tab.find()
+        .sort({ order: 1 })
+        .populate("pages", "pageUrlName name order lang", null, {
+          sort: { order: 1 },
+        });
     }
     res.status(200).json(tabs);
   } catch (error) {

@@ -57,11 +57,13 @@ module.exports.createArticlePageCtrl = asyncHandler(async (req, res) => {
       lastOrder = lastRecord[0].order;
     }
 
-    const pageUrlNameExist = await ArticlePage.find({ pageUrlName });
+    const pageUrlNameExist = await ArticlePage.find({
+      pageUrlName: req.body.pageUrlName,
+    });
     if (pageUrlNameExist.length) {
       await ArticlePage.updateMany(
-        { pageUrlName: pageName },
-        { tabId: newTabId },
+        { pageUrlName: req.body.pageUrlName },
+        { tabId: req.body.tabId },
         { new: true }
       );
     }
