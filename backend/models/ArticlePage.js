@@ -2,6 +2,16 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const ArticlePageSchema = new mongoose.Schema({
+  pageUrlName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  tabId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tab",
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -11,6 +21,12 @@ const ArticlePageSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+  },
+  order: {
+    type: Number,
+    required: true,
+    unique: true,
+    min: 1,
   },
   navbar: [
     {
@@ -29,11 +45,13 @@ const ArticlePageSchema = new mongoose.Schema({
   },
 });
 
-ArticlePageSchema.index({ name: 1, lang: 1 }, { unique: true });
+ArticlePageSchema.index({ pageUrlName: 1, lang: 1 }, { unique: true });
 
 function validateCreatePage(object) {
   const schema = Joi.object({
+    pageUrlName: Joi.string().trim().required(),
     name: Joi.string().trim().required(),
+    tabId: Joi.string().id().required(),
     lang: Joi.string().trim().required(),
     navbar: Joi.array().items(
       Joi.object({
@@ -53,6 +71,7 @@ function validateCreatePage(object) {
 
 function validateUpdatePage(object) {
   const schema = Joi.object({
+    pageUrlName: Joi.string().trim(),
     name: Joi.string().trim(),
     lang: Joi.string().trim(),
     navbar: Joi.array().items(
@@ -71,19 +90,10 @@ function validateUpdatePage(object) {
   return schema.validate(object);
 }
 
-function validateGetPage(object) {
-  const schema = Joi.object({
-    name: Joi.string().trim().required(),
-    lang: Joi.string().trim().required(),
-  });
-  return schema.validate(object);
-}
-
 const ArticlePage = mongoose.model("ArticlePage", ArticlePageSchema);
 
 module.exports = {
   ArticlePage,
   validateCreatePage,
   validateUpdatePage,
-  validateGetPage,
 };
