@@ -94,24 +94,71 @@ module.exports.getAllTabsCtrl = asyncHandler(async (req, res) => {
 module.exports.updateTabCtrl = asyncHandler(async (req, res) => {
   try {
     const { tabName } = req.params;
-    const { newTabUrlName, newLocalizedName, newOrder } = req.body;
-    const tab = await Tab.findOne({ tabUrlName: tabName });
-    if (!tab)
+    const { newTabUrlName, newLocalizedName, direction } = req.body;
+    let currentTab = await Tab.findOne({ tabUrlName: tabName });
+    if (!currentTab)
       return res
         .status(404)
         .json({ message: "the tab you trying to update doesn't exist" });
 
     // check that language in localizedName array should be unique
-    const langs = newLocalizedName.map((item) => item.lang);
-    if (new Set(langs).size !== langs.length) {
-      return res.status(400).json({ message: "duplicate languages" });
+    if (newLocalizedName?.length) {
+      const langs = newLocalizedName.map((item) => item.lang);
+      if (new Set(langs).size !== langs.length) {
+        return res.status(400).json({ message: "duplicate languages" });
+      }
+    }
+
+    if (direction) {
+      if (direction !== "up" && direction !== "down")
+        return res.status(400).json({ message: "Invalid direction" });
+      if (direction === "up") {
+        if (currentTab.order === 1)
+          return res.status(400).json({ message: "invalid order" });
+        const tempOrder = currentTab.order;
+        const fakeOrder = 100;
+        const tabAbove = await Tab.findOneAndUpdate(
+          { order: currentTab.order - 1 },
+          { order: fakeOrder },
+          { new: true }
+        );
+        currentTab = await Tab.findOneAndUpdate(
+          { tabUrlName: tabName },
+          { order: currentTab.order - 1 },
+          { new: true }
+        );
+        await Tab.findOneAndUpdate(
+          { order: fakeOrder },
+          { order: tempOrder },
+          { new: true }
+        );
+      } else {
+        const tempOrder = currentTab.order;
+        const fakeOrder = 100;
+        const tabBelow = await Tab.findOneAndUpdate(
+          { order: currentTab.order + 1 },
+          { order: fakeOrder },
+          { new: true }
+        );
+        if (!tabBelow)
+          return res.status(400).json({ message: "invalid order" });
+        currentTab = await Tab.findOneAndUpdate(
+          { tabUrlName: tabName },
+          { order: currentTab.order + 1 },
+          { new: true }
+        );
+        await Tab.findOneAndUpdate(
+          { order: fakeOrder },
+          { order: tempOrder },
+          { new: true }
+        );
+      }
     }
     const updatedTab = await Tab.findOneAndUpdate(
       { tabUrlName: tabName },
       {
         tabUrlName: newTabUrlName,
         localizedName: newLocalizedName,
-        order: newOrder,
       },
       { new: true }
     );
@@ -161,5 +208,3 @@ module.exports.deleteTabCtrl = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
   }
 });
-
-// want to make update order and when tab is deleted the orders reordered
