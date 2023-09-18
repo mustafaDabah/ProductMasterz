@@ -141,6 +141,17 @@ module.exports.deleteTabCtrl = asyncHandler(async (req, res) => {
     if (!isTabExist)
       return res.status(400).json({ message: "tab doesn't exist" });
     const deletedTab = await Tab.findOneAndDelete({ tabUrlName: tabName });
+
+    const tabsToUpdate = await Tab.find({ order: { $gt: deletedTab.order } });
+    const updateOps = tabsToUpdate.map((tab) => ({
+      updateOne: {
+        filter: { _id: tab._id },
+        update: { $set: { order: tab.order - 1 } },
+      },
+    }));
+
+    await Tab.bulkWrite(updateOps);
+
     res.status(200).json({
       data: deletedTab,
       message: "The tab has been deleted successfully",
