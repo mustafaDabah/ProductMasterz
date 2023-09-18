@@ -94,7 +94,7 @@ module.exports.getSingleArticlePageCtrl = asyncHandler(async (req, res) => {
 
 /**
  * @desc get all page names
- * @route /api/v0/pages/
+ * @route /api/v0/pages
  * @method GET
  * @access public
  */
@@ -133,27 +133,92 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
   try {
     const { pageName, lang } = req.params;
 
-    const { newPageName, newPageLang, navbar, header, content } = req.body;
+    const {
+      newPageName,
+      newPageLang,
+      newName,
+      newTabId,
+      navbar,
+      header,
+      content,
+      direction,
+    } = req.body;
     const { error } = validateUpdatePage({
       pageUrlName: newPageName,
       lang: newPageLang,
+      name: newName,
+      tabId: newTabId,
       navbar,
       header,
       content,
     });
     if (error) return res.status(400).json({ message: error.message });
 
-    let page = await ArticlePage.findOne({ pageUrlName: pageName, lang });
-    if (!page)
+    let currentPage = await ArticlePage.findOne({
+      pageUrlName: pageName,
+      lang,
+    });
+    if (!currentPage)
       return res.status(404).json({
         message: `'${pageName}' page with '${lang}' language is not found`,
       });
 
+    if (direction) {
+      if (direction !== "up" && direction !== "down")
+        return res.status(400).json({ message: "Invalid direction" });
+      if (direction === "up") {
+        if (currentPage.order === 1)
+          return res.status(400).json({ message: "invalid order" });
+        const tempOrder = currentPage.order;
+        const fakeOrder = 10000000;
+        await ArticlePage.updateMany(
+          { order: currentPage.order - 1 },
+          { order: fakeOrder },
+          { new: true }
+        );
+        await ArticlePage.updateMany(
+          { pageUrlName: pageName },
+          { order: currentPage.order - 1 },
+          { new: true }
+        );
+        await ArticlePage.updateMany(
+          { order: fakeOrder },
+          { order: tempOrder },
+          { new: true }
+        );
+      } else {
+        const tempOrder = currentPage.order;
+        const fakeOrder = 10000000;
+        const pagesBelow = await ArticlePage.updateMany(
+          { order: tempOrder + 1 },
+          { order: fakeOrder },
+          { new: true }
+        );
+        if (pagesBelow.modifiedCount <= 0)
+          return res.status(400).json({ message: "invalid order" });
+        currentPage = await ArticlePage.updateMany(
+          { pageUrlName: pageName },
+          { order: currentPage.order + 1 },
+          { new: true }
+        );
+        await ArticlePage.updateMany(
+          { order: fakeOrder },
+          { order: tempOrder },
+          { new: true }
+        );
+      }
+    }
+    if (newTabId) {
+      const tabExist = await Tab.findById(newTabId);
+      if (!tabExist) return res.status(400).json({ message: "invalid tab id" });
+    }
     page = await ArticlePage.findOneAndUpdate(
       { pageUrlName: pageName, lang },
       {
         pageUrlName: newPageName,
+        name: newName,
         lang: newPageLang,
+        tabId: newTabId,
         navbar,
         header,
         content,
@@ -173,6 +238,7 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
         message: `error - there is another page with the same pageUrlName and language, try to change any one of them`,
       });
     }
+    console.log(error);
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
   }
 });

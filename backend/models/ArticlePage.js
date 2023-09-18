@@ -77,6 +77,7 @@ function validateUpdatePage(object) {
     pageUrlName: Joi.string().trim(),
     name: Joi.string().trim(),
     lang: Joi.string().trim(),
+    tabId: Joi.string().id(),
     navbar: Joi.array().items(
       Joi.object({
         text: Joi.string().required(),
