@@ -75,9 +75,9 @@ module.exports.getAllTabsCtrl = asyncHandler(async (req, res) => {
           order: 1,
           "localizedName.$": 1,
         }
-      );
+      ).sort({ order: 1 });
     } else {
-      tabs = await Tab.find();
+      tabs = await Tab.find().sort({ order: 1 });
     }
     res.status(200).json(tabs);
   } catch (error) {
