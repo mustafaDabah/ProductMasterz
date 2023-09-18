@@ -57,6 +57,14 @@ module.exports.createArticlePageCtrl = asyncHandler(async (req, res) => {
       lastOrder = lastRecord[0].order;
     }
 
+    const pageUrlNameExist = await ArticlePage.find({ pageUrlName });
+    if (pageUrlNameExist.length) {
+      await ArticlePage.updateMany(
+        { pageUrlName: pageName },
+        { tabId: newTabId },
+        { new: true }
+      );
+    }
     const newPage = await ArticlePage.create({
       ...req.body,
       order: pageOrder ? pageOrder : lastOrder ? lastOrder + 1 : 1,
@@ -213,6 +221,12 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
     if (newTabId) {
       const tabExist = await Tab.findById(newTabId);
       if (!tabExist) return res.status(400).json({ message: "invalid tab id" });
+
+      await ArticlePage.updateMany(
+        { pageUrlName: pageName },
+        { tabId: newTabId },
+        { new: true }
+      );
     }
     page = await ArticlePage.findOneAndUpdate(
       { pageUrlName: pageName, lang },
@@ -220,7 +234,6 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
         pageUrlName: newPageName,
         name: newName,
         lang: newPageLang,
-        tabId: newTabId,
         navbar,
         header,
         content,
