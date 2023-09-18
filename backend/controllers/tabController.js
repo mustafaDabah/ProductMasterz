@@ -186,9 +186,8 @@ module.exports.updateTabCtrl = asyncHandler(async (req, res) => {
 module.exports.deleteTabCtrl = asyncHandler(async (req, res) => {
   try {
     const { tabName } = req.params;
-    const isTabExist = await Tab.findOne({ tabUrlName: tabName });
-    if (!isTabExist)
-      return res.status(400).json({ message: "tab doesn't exist" });
+    const tab = await Tab.findOne({ tabUrlName: tabName });
+    if (!tab) return res.status(400).json({ message: "tab doesn't exist" });
     const deletedTab = await Tab.findOneAndDelete({ tabUrlName: tabName });
 
     const tabsToUpdate = await Tab.find({ order: { $gt: deletedTab.order } });

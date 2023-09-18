@@ -46,8 +46,10 @@ module.exports.createArticlePageCtrl = asyncHandler(async (req, res) => {
     });
     const pageOrder = page?.order;
 
-    const tabExist = await Tab.findById(req.body.tabId);
-    if (!tabExist) return res.status(400).json({ message: "invalid tab id" });
+    if (req.body.tabId) {
+      const tabExist = await Tab.findById(req.body.tabId);
+      if (!tabExist) return res.status(400).json({ message: "invalid tab id" });
+    }
 
     let lastOrder;
     const lastRecord = await ArticlePage.find().sort({ order: -1 }).limit(1);
@@ -262,13 +264,35 @@ module.exports.deleteArticlePageCtrl = asyncHandler(async (req, res) => {
         .status(404)
         .json({ message: `the page you trying to delete doesn't exist` });
 
-    const deletedPage = await ArticlePage.findOneAndDelete({
+    const deletedPages = await ArticlePage.deleteMany({
       pageUrlName: pageName,
-      lang,
     });
+
+    const pagesToUpdate = await ArticlePage.find({
+      order: { $gt: pageExist.order },
+    });
+
+    const updatePromises = pagesToUpdate.map((page) => {
+      return ArticlePage.updateOne(
+        {
+          _id: page._id,
+        },
+        {
+          $inc: {
+            order: -1,
+          },
+        }
+      );
+    });
+
+    await Promise.all(updatePromises);
+
     res.status(200).json({
-      data: deletedPage,
-      message: `'${pageName}' page with '${lang}' language is deleted successfully`,
+      data: {
+        pageUrlName: pageName,
+        order: pageExist.order,
+      },
+      message: `'${pageName}' pages language are deleted successfully`,
     });
   } catch (error) {
     console.log(error);

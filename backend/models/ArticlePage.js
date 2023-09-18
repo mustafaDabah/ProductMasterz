@@ -10,7 +10,6 @@ const ArticlePageSchema = new mongoose.Schema({
   tabId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Tab",
-    required: true,
   },
   name: {
     type: String,
@@ -54,7 +53,7 @@ function validateCreatePage(object) {
   const schema = Joi.object({
     pageUrlName: Joi.string().trim().required(),
     name: Joi.string().trim().required(),
-    tabId: Joi.string().id().required(),
+    tabId: Joi.string().id(),
     lang: Joi.string().trim().required(),
     navbar: Joi.array().items(
       Joi.object({
