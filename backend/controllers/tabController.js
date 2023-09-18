@@ -205,6 +205,11 @@ module.exports.deleteTabCtrl = asyncHandler(async (req, res) => {
 
     await Tab.bulkWrite(updateOps);
 
+    await ArticlePage.updateMany(
+      { tabId: tab._id.toString() },
+      { tabId: null },
+      { new: true }
+    );
     res.status(200).json({
       data: deletedTab,
       message: "The tab has been deleted successfully",
