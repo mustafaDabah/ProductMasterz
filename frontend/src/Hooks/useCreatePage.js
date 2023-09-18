@@ -11,11 +11,13 @@ const useCreatePage = () => {
   const submitData = async (formData, value) => {
     setIsLoading(true);
 
-    const navbarItems = formData.navbar.split(',');
-    const navbarFormat = navbarItems.map(item => ({text: item, link: item}));
+    const navbarItems = formData?.navbar?.split(',');
+    const navbarFormat = navbarItems? navbarItems.map(item => ({text: item, link: item})) : undefined;
 
     try {
       const bodyData = {
+          pageUrlName: formData.pageUrlName,
+          tabId: formData.tabId,
           lang: formData.lang,
           name: formData.name,
           header: {

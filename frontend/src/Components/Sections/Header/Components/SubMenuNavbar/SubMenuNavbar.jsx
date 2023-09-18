@@ -5,14 +5,18 @@ import React, { useState } from "react";
 import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
 import { FaBars } from 'react-icons/fa';
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams  } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import useFetchData from "@/Hooks/useFetchData";
 
-function NavbarHeader({ navLinks }) {
+
+function SubMenuNavbar() {
     const [activeSection, setActiveSection] = useState('mainHeader');
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const pageLang = searchParams.get('lang');
+    const { data: navbarTabs } = useFetchData(`tabs?lang=${pageLang ? pageLang : 'ar'}`);
+
+    console.log(navbarTabs)
 
     const router = useRouter();
 
@@ -25,10 +29,10 @@ function NavbarHeader({ navLinks }) {
 
     const handleLanguageChange = (e) => {
         const lang = e.target.value;
-        
+
         // Append or update the lang query parameter and redirect
         const newUrl = pathname === '/' ? `${pathname}page/home?lang=${lang}` : `${pathname}?lang=${lang}`;
-    
+
         router.push(newUrl);
     }
 
@@ -47,26 +51,22 @@ function NavbarHeader({ navLinks }) {
                 {/* Navigation Links */}
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto mr-auto flex justify-content-center align-items-center">
-                        {navLinks.map((item, index) => (
-                            <Nav.Link
-                                key={index} 
-                                className={` nav-link  ${activeSection === item.link ? 'active-link' : ''}`}
-                                href={`#${item.link}`}
-                            >
-                                {item.text}
-                            </Nav.Link>
-
+                        {navbarTabs && navbarTabs.map(tab => (
+                            <NavDropdown key={tab.id} title={tab.localizedName[0].name} id="basic-nav-dropdown">
+                                {tab.pages.map((page, index) => (
+                                    <NavDropdown.Item key={index} href={`/page/${page.pageUrlName}?lang=${pageLang}`}>{page.pageUrlName}</NavDropdown.Item>
+                                ))}
+                            </NavDropdown>
                         ))}
                     </Nav>
-                <select className="select-lang" onChange={handleLanguageChange} value={pageLang}>
-                    <option value="ar">ar</option>
-                    <option value="en">en</option>
-                </select>
+                    <select className="select-lang" onChange={handleLanguageChange} value={pageLang}>
+                        <option value="ar">ar</option>
+                        <option value="en">en</option>
+                    </select>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
     )
 }
 
-export default NavbarHeader
-export const NavbarHeaderMemo = React.memo(NavbarHeader)
+export default SubMenuNavbar

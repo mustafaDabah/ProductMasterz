@@ -5,8 +5,6 @@ import Popup from "./Components/Popup/Popup";
 import { FaQuoteLeft, FaLinkedinIn } from 'react-icons/fa';
 import { Button } from "@/Components/UI";
 import { motion } from 'framer-motion';
-import { fadeInLeftVariants, fadeInRightVariants, fadeInUpVariants, normalTransition } from "@/utils/animation";
-import useAnimationInView from "@/Hooks/useAnimationInView";
 import Link from "next/link";
 
 function About({ content }) {

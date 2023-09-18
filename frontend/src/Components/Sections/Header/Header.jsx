@@ -3,19 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { NavbarHeaderMemo } from "./Components/Navbar/Navbar";
 import Image from "next/image";
 import { motion } from 'framer-motion';
-import useAnimationInView from '@/Hooks/useAnimationInView';
 import { fadeInLeftVariants, fadeInRightVariants, normalTransition } from '@/utils/animation';
 import {  IoIosArrowDown } from 'react-icons/io';
 import Link from 'next/link';
 import { Button } from '@/Components/UI';
 import {AiFillMessage } from 'react-icons/ai';
+import SubMenuNavbar from './Components/SubMenuNavbar/SubMenuNavbar';
 
-function Header({ content, navLinks  }) {
+function Header({ content, navLinks, navbarItems  }) {
   const { title, description, imageUrl } = content;
 
   return (
     <>
-      <NavbarHeaderMemo navLinks={navLinks} />
+     {navbarItems?.length > 0 ? (<NavbarHeaderMemo navLinks={navLinks} />) : (<SubMenuNavbar />)}
       <section id="mainHeader" className="large-margin pt-0">
         <div id="hero-section" className="hero-section overflow-hidden ">
           <div className="container">

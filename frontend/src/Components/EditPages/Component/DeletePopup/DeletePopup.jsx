@@ -4,20 +4,27 @@ import React from 'react'
 import useClickOutsideAndEscape from '@/Hooks/useClickOutsideAndEscape';
 import { Button } from 'react-bootstrap';
 import { Alert } from '@/Components/UI';
-import { useRouter , useParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import useDeletePage from '@/Hooks/useDeletePage';
+import useDeleteTap from '@/Hooks/useDeleteTap';
 
 function DeletePopup({ show, closePopup, pageName, lang }) {
-    const {isLoading, deleteArticle: deletePage} = useDeletePage();
+    const { isLoading, deleteArticle: deletePage } = useDeletePage();
+    const { deleteTab } = useDeleteTap();
     const router = useRouter()
 
-    function deleteRecord() {
-        deletePage(pageName, lang);
-        router.refresh(window.location.pathname);
-        closePopup()
-    }
+    console.log(lang)
 
-    console.log(pageName)
+    function deleteRecord() {
+        if (!lang) {
+            deleteTab(pageName);
+            closePopup()
+        } else {
+            deletePage(pageName, lang);
+        }
+        closePopup()
+        router.refresh(window.location.pathname);
+    }
 
     return (
         <>

@@ -44,7 +44,7 @@ function CreateBlog() {
   const handleSectionId = () => {
     addSection(value, setValue);
   }
-
+ 
   return (
     <div className="blog bg-white direction-ltr">
       <div className="container">
