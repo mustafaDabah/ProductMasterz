@@ -123,6 +123,15 @@ body.modal-open {
     }
 }
 
+.select-lang {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 80px;
+}
+
 .fadeIn {
     -webkit-animation-name: fadeIn;
     animation-name: fadeIn;
@@ -2700,6 +2709,7 @@ hr {
     background-color: transparent;
     border: 0px;
     outline: none;
+    color: #000
 }
 
 .about-omar h2 {

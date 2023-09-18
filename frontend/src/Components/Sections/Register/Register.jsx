@@ -2,7 +2,6 @@
 import useSendMessages from "@/Hooks/useSendMessages";
 import React, { useRef } from "react";
 import { Alert, Button, Title } from "@/Components/UI";
-import useAnimationInView from "@/Hooks/useAnimationInView";
 import {  fadeInRightVariants, normalTransition } from "@/utils/animation";
 import { AiOutlineSend } from "react-icons/ai";
 

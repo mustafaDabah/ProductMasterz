@@ -35,6 +35,7 @@ async function blog({searchParams, params }) {
             <Header
               navLinks={navbarItems}
               content={headerContent}
+              navbarItems={navbarItems}
               imgPath="/logo.png"
 
             />

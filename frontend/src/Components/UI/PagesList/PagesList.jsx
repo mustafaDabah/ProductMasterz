@@ -12,11 +12,11 @@ function SinglePage({item}) {
                 className='d-block single-page-list d-flex justify-content-between align-items-center'
             >
 
-                <h3>{item.name}</h3>
+                <h3>{item.pageUrlName}</h3>
 
                 <div className="icons d-flex">
-                    {item.langs.includes('ar') && <Link href={`/edit/${item.name}?lang=ar`} target='_blank'> Ar</Link>}
-                    {item.langs.includes('en') && <Link className='ml-3' href={`/edit/${item.name}?lang=en`} target='_blank'> En</Link>}
+                    {item.langs.includes('ar') && <Link href={`/edit/${item.pageUrlName}?lang=ar`} target='_blank'> Ar</Link>}
+                    {item.langs.includes('en') && <Link className='ml-3' href={`/edit/${item.pageUrlName}?lang=en`} target='_blank'> En</Link>}
                 </div>
             </div>
         </div>

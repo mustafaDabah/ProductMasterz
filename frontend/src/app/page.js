@@ -22,6 +22,7 @@ export default async function Home() {
   const navbarItems = websiteContent.navbar;
   const headerContent = websiteContent.header;
 
+  console.log(websiteContent)
 
   return (
     <div className="home-page direction-rtl">

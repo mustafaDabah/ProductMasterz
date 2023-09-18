@@ -19,7 +19,7 @@ const SunEditor = dynamic(() => import("suneditor-react"), {
 });
 
 function EditPages({ pageData }) {
-    const { name, navbar, content, header, lang } = pageData;
+    const { name, navbar, content, header, lang, pageUrlName, tabId } = pageData;
     const navbarString = navbar.map(item => item.text).join(', ')
 
     const editor = useRef();
@@ -31,6 +31,8 @@ function EditPages({ pageData }) {
     const addSection = useSelectSection();
 
     const [formData, setFormData] = useState({
+        pageUrlName,
+        tabId,
         lang,
         name,
         headerTitle: header.title,
