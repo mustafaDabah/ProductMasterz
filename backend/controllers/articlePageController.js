@@ -41,6 +41,11 @@ module.exports.createArticlePageCtrl = asyncHandler(async (req, res) => {
         message: `'${req.body.pageUrlName}' page with '${req.body.lang}' language already exists`,
       });
 
+    const page = await ArticlePage.findOne({
+      pageUrlName: req.body.pageUrlName,
+    });
+    const pageOrder = page?.order;
+
     const tabExist = await Tab.findById(req.body.tabId);
     if (!tabExist) return res.status(400).json({ message: "invalid tab id" });
 
@@ -52,7 +57,7 @@ module.exports.createArticlePageCtrl = asyncHandler(async (req, res) => {
 
     const newPage = await ArticlePage.create({
       ...req.body,
-      order: lastOrder ? lastOrder + 1 : 1,
+      order: pageOrder ? pageOrder : lastOrder ? lastOrder + 1 : 1,
     });
     res.status(201).json({
       data: newPage,

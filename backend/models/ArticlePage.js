@@ -25,7 +25,6 @@ const ArticlePageSchema = new mongoose.Schema({
   order: {
     type: Number,
     required: true,
-    unique: true,
     min: 1,
   },
   navbar: [
@@ -46,6 +45,10 @@ const ArticlePageSchema = new mongoose.Schema({
 });
 
 ArticlePageSchema.index({ pageUrlName: 1, lang: 1 }, { unique: true });
+ArticlePageSchema.index(
+  { pageUrlName: 1, name: 1, order: 1 },
+  { unique: true }
+);
 
 function validateCreatePage(object) {
   const schema = Joi.object({
