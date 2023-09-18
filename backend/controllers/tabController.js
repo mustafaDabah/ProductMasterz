@@ -72,6 +72,7 @@ module.exports.getAllTabsCtrl = asyncHandler(async (req, res) => {
         },
         {
           tabUrlName: 1,
+          order: 1,
           "localizedName.$": 1,
         }
       );
