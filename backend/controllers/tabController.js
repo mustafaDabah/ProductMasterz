@@ -23,8 +23,8 @@ module.exports.Ctrl = asyncHandler(async (req, res) => {
  */
 module.exports.createTabCtrl = asyncHandler(async (req, res) => {
   try {
-    const { tabUrlName, localizedName, order } = req.body;
-    const { error } = validateCreateTab({ tabUrlName, localizedName, order });
+    const { tabUrlName, localizedName } = req.body;
+    const { error } = validateCreateTab({ tabUrlName, localizedName });
     if (error) return res.status(400).json({ message: error.message });
 
     // check that language in localizedName array should be unique
@@ -32,8 +32,16 @@ module.exports.createTabCtrl = asyncHandler(async (req, res) => {
     if (new Set(langs).size !== langs.length) {
       return res.status(400).json({ message: "duplicate languages" });
     }
-
-    const newTab = await Tab.create(req.body);
+    let lastOrder;
+    const lastRecord = await Tab.find().sort({ order: -1 }).limit(1);
+    if (lastRecord.length) {
+      lastOrder = lastRecord[0].order;
+    }
+    const newTab = await Tab.create({
+      tabUrlName,
+      localizedName,
+      order: lastOrder ? lastOrder + 1 : 1,
+    });
     res
       .status(201)
       .json({ data: newTab, message: "The tab has been created successfully" });
@@ -142,3 +150,5 @@ module.exports.deleteTabCtrl = asyncHandler(async (req, res) => {
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
   }
 });
+
+// want to make update order and when tab is deleted the orders reordered

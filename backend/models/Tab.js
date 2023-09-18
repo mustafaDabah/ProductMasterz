@@ -33,7 +33,6 @@ function validateCreateTab(object) {
         })
       )
       .required(),
-    order: Joi.number().required(),
   });
   return schema.validate(object);
 }
