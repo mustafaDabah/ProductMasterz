@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const { validateCreateTab, Tab } = require("../models/Tab");
+const { ArticlePage } = require("../models/ArticlePage");
 
 /**
  * @desc
@@ -204,6 +205,38 @@ module.exports.deleteTabCtrl = asyncHandler(async (req, res) => {
       data: deletedTab,
       message: "The tab has been deleted successfully",
     });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
+  }
+});
+
+/**
+ * @desc get tab pages
+ * @route /api/v0/tabs/:tabName/pages
+ * @method GET
+ * @access public
+ */
+module.exports.getTabPagesCtrl = asyncHandler(async (req, res) => {
+  try {
+    const tab = await Tab.findOne({ tabUrlName: req.params.tabName });
+    const { lang } = req.query;
+    if (!tab)
+      return res
+        .status(404)
+        .json({ message: "invalid tab name,tab not found" });
+    let pages;
+    if (lang) {
+      pages = await ArticlePage.find({
+        tabId: tab._id.toString(),
+        lang,
+      }).select("pageUrlName name lang order");
+    } else {
+      pages = await ArticlePage.find({
+        tabId: tab._id.toString(),
+      }).select("pageUrlName name lang order");
+    }
+    res.status(200).json(pages);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "HTTP 500 - Internal Server Error" });
