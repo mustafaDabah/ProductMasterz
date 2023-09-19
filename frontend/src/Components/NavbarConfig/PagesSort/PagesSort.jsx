@@ -4,6 +4,7 @@ import DeletePopup from '@/Components/EditPages/Component/DeletePopup/DeletePopu
 import useFetchData from '@/Hooks/useFetchData'
 import { BASIC_URL } from '@/utils/basicURL';
 import axios from 'axios';
+import Link from 'next/link';
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { FaArrowDown, FaArrowUp, FaEdit, FaTrash } from 'react-icons/fa';
@@ -29,16 +30,19 @@ function SingleTap({ item, refetchData }) {
             <div
                 key={item.id}
                 className='d-block single-page-list d-flex justify-content-between align-items-center'
-            >
+            > 
                 <h3>{item.pageUrlName}</h3>
 
-                <div className="icons d-flex">
+                <div className="icons d-flex align-items-center">
                     <Button onClick={() => updateOrder('down')}>
                         <FaArrowDown />
                     </Button>
                     <Button onClick={() => updateOrder('up')}>
                         <FaArrowUp />
                     </Button>
+
+                    <Link className='ml-3' href={`/edit/${item.pageUrlName}?lang=ar`} target='_blank'> Ar</Link>
+                    <Link className='ml-3' href={`/edit/${item.pageUrlName}?lang=en`} target='_blank'> En</Link>
                 </div>
             </div>
         </div>

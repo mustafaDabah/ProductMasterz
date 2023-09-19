@@ -11,11 +11,16 @@ const useUpdatePage = () => {
   const submitData = async (formData, value) => {
     setIsLoading(true);
 
-    const navbarItems = formData.navbar.split(',');
-    const navbarFormat = navbarItems.map(item => ({text: item, link: item}));
+    const navbarItems = formData?.navbar?.split(',');
+    const navbarFormat = navbarItems?.length > 1 ? navbarItems.map(item => ({text: item, link: item})) : undefined;
 
-    try {
+    console.log(navbarItems)
+    console.log(navbarFormat)
+
+    try { 
       const bodyData = {
+          pageUrlName: formData.pageUrlName,
+          tabId: formData.tabId,
           lang: formData.lang,
           name: formData.name,
           header: {
@@ -27,7 +32,7 @@ const useUpdatePage = () => {
           content: value,
       };
 
-      await axios.put(`${BASIC_URL}/pages/${formData.name}/${formData.lang}`, bodyData);
+      await axios.put(`${BASIC_URL}/pages/${formData.pageUrlName}/${formData.lang}`, bodyData);
 
       toast.success("page update successfully");
 

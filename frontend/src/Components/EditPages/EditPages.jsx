@@ -69,7 +69,7 @@ function EditPages({ pageData }) {
                  {openPopup && <DeletePopup
                     show={openPopup}
                     closePopup={() => setOpenPopup(false)}
-                    pageName={formData.name}
+                    pageName={formData.pageUrlName}
                     lang={formData.lang}
                 />}
                  <div className="w-100 text-right">

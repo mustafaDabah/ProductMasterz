@@ -14,7 +14,6 @@ function UpdateTap({ tabData }) {
     const [formData, setFormData] = useState({
         ARlang: tabData.localizedName[0].name,
         ENlang: tabData.localizedName[1].name,
-        tabUrlName: tabData.tabUrlName
     });
 
     const createTap = async (e) => {
@@ -51,7 +50,6 @@ function UpdateTap({ tabData }) {
 
     return (
         <form action="" onSubmit={createTap} className='mb-3'>
-            <input value={formData.tabUrlName} required type="text" placeholder='Tap Url Name' name="tabUrlName" onChange={handleInputChange} />
             <input value={formData.ARlang} required type="text" placeholder='Arabic Name' name="ARlang" onChange={handleInputChange} />
             <input value={formData.ENlang} required type="text" placeholder='English Name' name="ENlang" onChange={handleInputChange} />
             <Button

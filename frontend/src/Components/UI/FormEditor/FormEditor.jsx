@@ -9,7 +9,7 @@ function FormEditor(props) {
     const [tabsCategories, setTabsCategories] = useState([])
 
     console.log(data);
-    console.log(tabsCategories);
+    console.log(formData.tabId);
 
     return (
         <div>
@@ -24,7 +24,7 @@ function FormEditor(props) {
                         <option value="en">en</option>
                     </select>
 
-                    <select name="tabId" onChange={handleInputChange} defaultValue={formData.tabId || ''}>
+                    <select name="tabId" onChange={handleInputChange} value={formData.tabId}>
                         <option value="choose language"> navbar tap</option>
                         {data && data.map(item => (
                             <option key={item.id} value={item._id}>{item.tabUrlName}</option>

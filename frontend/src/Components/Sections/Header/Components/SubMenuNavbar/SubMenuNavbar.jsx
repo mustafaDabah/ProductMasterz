@@ -54,7 +54,7 @@ function SubMenuNavbar() {
                         {navbarTabs && navbarTabs.map(tab => (
                             <NavDropdown key={tab.id} title={tab.localizedName[0].name} id="basic-nav-dropdown">
                                 {tab.pages.map((page, index) => (
-                                    <NavDropdown.Item key={index} href={`/page/${page.pageUrlName}?lang=${pageLang}`}>{page.pageUrlName}</NavDropdown.Item>
+                                    <NavDropdown.Item key={index} href={`/page/${page.pageUrlName}?lang=${pageLang}`}>{page.name}</NavDropdown.Item>
                                 ))}
                             </NavDropdown>
                         ))}
