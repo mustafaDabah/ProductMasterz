@@ -148,7 +148,7 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
     const {
       newPageName,
       newPageLang,
-      newName,
+      name,
       newTabId,
       navbar,
       header,
@@ -158,7 +158,7 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
     const { error } = validateUpdatePage({
       pageUrlName: newPageName,
       lang: newPageLang,
-      name: newName,
+      name,
       tabId: newTabId,
       navbar,
       header,
@@ -234,7 +234,7 @@ module.exports.updateArticlePageCtrl = asyncHandler(async (req, res) => {
       { pageUrlName: pageName, lang },
       {
         pageUrlName: newPageName,
-        name: newName,
+        name,
         lang: newPageLang,
         navbar,
         header,
