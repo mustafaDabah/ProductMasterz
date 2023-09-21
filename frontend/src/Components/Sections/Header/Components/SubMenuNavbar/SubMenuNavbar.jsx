@@ -55,7 +55,7 @@ function SubMenuNavbar() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto mr-auto flex justify-content-center align-items-center">
                         {navbarTabs && navbarTabs.map(tab => (
-                            <Dropdown>
+                            <Dropdown key={tab.id}>
                                 <Dropdown.Toggle className="custom-dropdown" id="dropdown-basic">
                                     {tab.localizedName[0].name}  <IoIosArrowDown />
                                 </Dropdown.Toggle>
