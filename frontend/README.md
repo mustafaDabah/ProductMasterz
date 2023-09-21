@@ -1,4 +1,4 @@
-# Omar Hamdy Portfolio
+# Product MasterZ Website
 
 this is portfolio website build with Next.js 13 and Airtable backend 
 
