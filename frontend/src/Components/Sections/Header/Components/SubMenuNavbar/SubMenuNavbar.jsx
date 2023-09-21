@@ -15,8 +15,8 @@ function SubMenuNavbar() {
     const [activeSection, setActiveSection] = useState('mainHeader');
     const pathname = usePathname();
     const searchParams = useSearchParams();
-    const pageLang = searchParams.get('lang');
-    const { data: navbarTabs } = useFetchData(`tabs?lang=${pageLang ? pageLang : 'ar'}`);
+    const pageLang = searchParams.get('lang') ?? 'ar';
+    const { data: navbarTabs } = useFetchData(`tabs?lang=${pageLang}`)
 
     console.log(navbarTabs)
 
