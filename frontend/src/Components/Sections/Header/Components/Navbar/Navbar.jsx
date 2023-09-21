@@ -7,6 +7,7 @@ import { FaBars } from 'react-icons/fa';
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams  } from 'next/navigation'
 import useFetchData from "@/Hooks/useFetchData";
+import Link from "next/link";
 
 function NavbarHeader({ navLinks }) {
     const [activeSection, setActiveSection] = useState('mainHeader');
@@ -37,8 +38,9 @@ function NavbarHeader({ navLinks }) {
             <Container>
                 {/* Site Logo */}
                 <Navbar.Brand href="#" className="d-flex align-items-center mr-0">
-                    <Image src={'/Horizontal Version.png'} alt="logo" width={200} height={70} className="object-fit-cover " />
-                    {/* <h3 className='mr-1 mt-2 logo-title'>Product MaterZ</h3> */}
+                     <Link href={'/'}>
+                        <Image src={'/Horizontal Version.png'} alt="logo" width={200} height={70} className="object-fit-cover " />
+                    </Link>
                 </Navbar.Brand>
                 {/* Dropdown Button */}
                 <Navbar.Toggle aria-controls="basic-navbar-nav" className='border-0 text-mode'>

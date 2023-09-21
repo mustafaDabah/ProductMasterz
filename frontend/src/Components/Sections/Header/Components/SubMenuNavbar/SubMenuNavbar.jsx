@@ -2,11 +2,13 @@
 
 import useScrollHandler from "@/Hooks/useScrollHandler";
 import React, { useState } from "react";
-import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
+import { Navbar, Nav, Container, Button, NavDropdown, Dropdown } from "react-bootstrap";
 import { FaBars } from 'react-icons/fa';
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import useFetchData from "@/Hooks/useFetchData";
+import { IoIosArrowDown } from "react-icons/io";
+import Link from "next/link";
 
 
 function SubMenuNavbar() {
@@ -41,8 +43,9 @@ function SubMenuNavbar() {
             <Container>
                 {/* Site Logo */}
                 <Navbar.Brand href="#" className="d-flex align-items-center mr-0">
-                    <Image src={'/Horizontal Version.png'} alt="logo" width={200} height={70} className="object-fit-cover " />
-                    {/* <h3 className='mr-1 mt-2 logo-title'>Product MaterZ</h3> */}
+                    <Link href={'/'}>
+                      <Image src={'/Horizontal Version.png'} alt="logo" width={200} height={70} className="object-fit-cover " />
+                    </Link>
                 </Navbar.Brand>
                 {/* Dropdown Button */}
                 <Navbar.Toggle aria-controls="basic-navbar-nav" className='border-0 text-mode'>
@@ -52,11 +55,17 @@ function SubMenuNavbar() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto mr-auto flex justify-content-center align-items-center">
                         {navbarTabs && navbarTabs.map(tab => (
-                            <NavDropdown key={tab.id} title={tab.localizedName[0].name} id="basic-nav-dropdown">
-                                {tab.pages.map((page, index) => (
-                                    <NavDropdown.Item key={index} href={`/page/${page.pageUrlName}?lang=${pageLang}`}>{page.name}</NavDropdown.Item>
-                                ))}
-                            </NavDropdown>
+                            <Dropdown>
+                                <Dropdown.Toggle className="custom-dropdown" id="dropdown-basic">
+                                    {tab.localizedName[0].name}  <IoIosArrowDown />
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    {tab.pages.map((page, index) => (
+                                        <Dropdown.Item key={index} href={`/page/${page.pageUrlName}?lang=${pageLang}`}>{page.name}</Dropdown.Item>
+                                    ))}
+                                </Dropdown.Menu>
+                            </Dropdown>
                         ))}
                     </Nav>
                     <select className="select-lang" onChange={handleLanguageChange} value={pageLang}>
