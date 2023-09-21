@@ -1,6 +1,7 @@
 import NavbarConfig from '@/Components/NavbarConfig/NavbarConfig';
 import { CurrentUser, Title } from '@/Components/UI';
 import { authOptions } from '@/utils/authOptions';
+import { redirect } from 'next/navigation';
 import { getData } from '@/utils/basicURL';
 import { getServerSession } from 'next-auth';
 import React from 'react'
